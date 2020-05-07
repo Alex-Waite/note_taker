@@ -56,6 +56,8 @@ var handleNoteSave = function() {
     text: $noteText.val()
   };
 
+  console.log(handleNoteSave.title) //giving me undefined
+
   saveNote(newNote).then(function(data) {
     getAndRenderNotes();
     renderActiveNote();

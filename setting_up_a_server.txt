@@ -1,3 +1,21 @@
 1. install express and dependencies
 
-$ npm install express --save install just the dependencies?
+$ npm install express --save install just the dependencies
+
+2. add the require code for express and any dependencies like .path
+3. store the port in a variable
+4. add the routes and remember to check the file paths carefully
+5. add app.listen(port , function() (express.listen)
+
+
+
+
+
+
+
+
+
+
+
+install nodemon - for continious server re-starting
+

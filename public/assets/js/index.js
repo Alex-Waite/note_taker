@@ -16,13 +16,15 @@ var getNotes = function() {
 };
 
 // A function for saving a note to the db
-var saveNote = function(note) {
+var saveNote = function(note) {   // note = newNote object
   return $.ajax({
     url: "/api/notes",
     data: note,
     method: "POST"
   });
 };
+
+
 
 // A function for deleting a note from the db
 var deleteNote = function(id) {
@@ -56,9 +58,12 @@ var handleNoteSave = function() {
     text: $noteText.val()
   };
 
-  console.log(handleNoteSave.title) //giving me undefined
+  // -------------------------------- When saveNoteBtn is clicked, title and text stored in newNote object
+  console.log(newNote) //returning 'text' and 'title' values
 
-  saveNote(newNote).then(function(data) {
+  saveNote(newNote)  // calls saveNote function with newNote object containing 'title' and 'value' vals which makes an ajax call to the notes API
+  
+  .then(function(data) {
     getAndRenderNotes();
     renderActiveNote();
   });
@@ -129,7 +134,8 @@ var renderNoteList = function(notes) {
 
 // Gets notes from the db and renders them to the sidebar
 var getAndRenderNotes = function() {
-  return getNotes().then(function(data) {
+  return getNotes()
+  .then(function(data) {
     renderNoteList(data);
   });
 };

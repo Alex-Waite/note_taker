@@ -1,6 +1,7 @@
 //imports express and stores it an the 'app' variable for easy use
 const express = require('express');
 const app = express();
+const fs = require('fs');
 
 // get the npm path module to handle routes
 const path = require('path');
@@ -13,17 +14,28 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 
-// console.log(notesList);
-// console.log(indexJS);
 
 // routes app  -------------------------------------------------------
 
-app.get('/api/notes', function(req , res) {
-    res.send(path.join(__dirname, '/db/db.json'));
+
+// let jsonInput = res.body;
+// let newJsonNote = JSON.parse(jsonInput);
+
+
+app.post('/api/notes', function(req , res) { // data from front end being caught by app.get???
+    let noteInput = req.body;
+    let writeNote = JSON.stringify(noteInput);
+    // check the types of data
+    console.log(noteInput)
+    console.log(typeof noteInput) // input is an object
+    console.log(writeNote)
+    console.log(typeof writeNote) // input is now a string
 });
 
-app.post('/api/notes', function(req , res) {
-    res.send(path.join(__dirname, '/db/db.json'));  //not sendFile
+
+app.get('/api/notes', function(req , res) { 
+    res.send(req.body);
+    console.log(req.body)
 });
 
 // routes html  -------------------------------------------------------

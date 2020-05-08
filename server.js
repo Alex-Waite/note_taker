@@ -22,38 +22,46 @@ app.use(express.static('public'));
 // routes app  -------------------------------------------------------
 
 
-// let jsonInput = res.body;
-// let newJsonNote = JSON.parse(jsonInput);
-
-
 app.post('/api/notes', function (req, res) { // data from front end being caught by app.get???
     let noteInput = req.body;
-    let noteContent = JSON.stringify(noteInput);
-    // check the types of data
-    console.log(noteInput)
-    console.log(typeof noteInput) // input is an object, needs to be a string to save to db.json object
-    console.log(noteContent)
-    console.log(typeof noteContent) // input is now a string
+    let noteContent = noteInput;
 
-    fs.writeFile(outputFile, noteContent, 'utf8', function (err) {
+    let noteArr = [];
+    noteArr.push(noteContent);
+    let noteArrStr = JSON.stringify(noteArr);
+    console.log(noteArrStr)
+    
+    fs.writeFile(outputFile, noteArrStr, 'utf8', function (err) {
         if (err) {
             console.log("An error occured while writing JSON Object to File.");
             return console.log(err);
+        } else {
+            res.send(noteArrStr); 
+        console.log("JSON file has been saved.");
         }
 
-        console.log("JSON file has been saved.");
     });
-
-    
-    // fs.writeFile(path.join(output_dir, "db.json"), noteContent);
 
 })
 
 app.get('/api/notes', function (req, res) {
-    res.send(req.body);
-    console.log(req.body)
-})
 
+    // First I want to read the file
+    fs.readFile(outputFile, function read(err, data) {
+        if (err) {
+            throw err;
+        }
+        const notesArr = data;
+        console.log(notesArr);
+
+        let notesArrJson = JSON.parse(notesArr);
+        console.log(notesArrJson);
+        console.log(typeof notesArrJson);
+
+        res.send(notesArrJson)
+    });
+    
+});
 
 
 

@@ -3,6 +3,10 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 
+// const util = require('util');
+// const writeFileAsync = util.promisify(fs.writeFile);
+const outputFile = __dirname + `/db/db.json`;
+
 // get the npm path module to handle routes
 const path = require('path');
 
@@ -27,28 +31,36 @@ app.post('/api/notes', function (req, res) { // data from front end being caught
     let noteContent = JSON.stringify(noteInput);
     // check the types of data
     console.log(noteInput)
-    console.log(typeof noteInput) // input is an object
+    console.log(typeof noteInput) // input is an object, needs to be a string to save to db.json object
     console.log(noteContent)
     console.log(typeof noteContent) // input is now a string
 
-    fs.writeFile('new_note', noteContent, function (err) {
+    fs.writeFile(outputFile, noteContent, 'utf8', function (err) {
         if (err) {
-            console.log('An error occured while writing JSON Object to File.');
+            console.log("An error occured while writing JSON Object to File.");
             return console.log(err);
         }
-    })
-    console.log("JSON file has been saved.");
-});
 
+        console.log("JSON file has been saved.");
+    });
+
+    
+    // fs.writeFile(path.join(output_dir, "db.json"), noteContent);
+
+})
 
 app.get('/api/notes', function (req, res) {
     res.send(req.body);
     console.log(req.body)
-});
+})
+
+
+
 
 // routes html  -------------------------------------------------------
 
 app.get('/notes', function (req, res) {
+    console.log(res)
     res.sendFile(path.join(__dirname, '/public/notes.html'));
 });
 

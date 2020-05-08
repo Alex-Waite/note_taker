@@ -24,8 +24,6 @@ var saveNote = function(note) {   // note = newNote object
   });
 };
 
-
-
 // A function for deleting a note from the db
 var deleteNote = function(id) {
   return $.ajax({
@@ -133,7 +131,7 @@ var renderNoteList = function(notes) {
 };
 
 // Gets notes from the db and renders them to the sidebar
-var getAndRenderNotes = function() {
+var getAndRenderNotes = function() { // these are IIFE's
   return getNotes()
   .then(function(data) {
     renderNoteList(data);

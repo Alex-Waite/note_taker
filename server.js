@@ -22,38 +22,46 @@ app.use(express.static('public'));
 // let newJsonNote = JSON.parse(jsonInput);
 
 
-app.post('/api/notes', function(req , res) { // data from front end being caught by app.get???
+app.post('/api/notes', function (req, res) { // data from front end being caught by app.get???
     let noteInput = req.body;
-    let writeNote = JSON.stringify(noteInput);
+    let noteContent = JSON.stringify(noteInput);
     // check the types of data
     console.log(noteInput)
     console.log(typeof noteInput) // input is an object
-    console.log(writeNote)
-    console.log(typeof writeNote) // input is now a string
+    console.log(noteContent)
+    console.log(typeof noteContent) // input is now a string
+
+    fs.writeFile('new_note', noteContent, function (err) {
+        if (err) {
+            console.log('An error occured while writing JSON Object to File.');
+            return console.log(err);
+        }
+    })
+    console.log("JSON file has been saved.");
 });
 
 
-app.get('/api/notes', function(req , res) { 
+app.get('/api/notes', function (req, res) {
     res.send(req.body);
     console.log(req.body)
 });
 
 // routes html  -------------------------------------------------------
 
-app.get('/notes', function(req , res) {
+app.get('/notes', function (req, res) {
     res.sendFile(path.join(__dirname, '/public/notes.html'));
 });
 
-app.get('*', function(req , res) {
+app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
 
 // listening code
 
-app.listen(PORT, function() {
+app.listen(PORT, function () {
     console.log("App listening on PORT " + PORT);
-  });
+});
 
 
 

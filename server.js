@@ -19,48 +19,50 @@ app.use(express.json());
 app.use(express.static('public'));
 
 
-// routes app  -------------------------------------------------------
 
 
-app.post('/api/notes', function (req, res) { // data from front end being caught by app.get???
-    let noteInput = req.body;
-    let noteContent = noteInput;
+// routes app  ------------------------------------------------------
 
+app.post('/api/notes', function (req, res) { 
     let noteArr = [];
-    noteArr.push(noteContent);
-    let noteArrStr = JSON.stringify(noteArr);
-    console.log(noteArrStr)
-    
-    fs.writeFile(outputFile, noteArrStr, 'utf8', function (err) {
+    let noteInput = req.body;
+    console.log('***********************************')
+    console.log(noteInput)
+
+    //add new note to noteArr[]
+    noteArr.push(noteInput); //!!!!!!!!!!
+
+    //stingify new object before writing to noteArr[]
+    let note = JSON.stringify(noteArr);
+
+    fs.writeFile(outputFile, note, 'utf8', function (err) {
         if (err) {
             console.log("An error occured while writing JSON Object to File.");
             return console.log(err);
         } else {
-            res.send(noteArrStr); 
-        console.log("JSON file has been saved.");
+            res.send(note);
+            console.log("JSON file has been saved.");
         }
 
     });
 
-})
+});
 
 app.get('/api/notes', function (req, res) {
 
-    // First I want to read the file
+    // reads noteArr = []
     fs.readFile(outputFile, function read(err, data) {
         if (err) {
             throw err;
         }
-        const notesArr = data;
-        console.log(notesArr);
+        console.log('++++++++++++++++++++++++++++++++++++++++')
+        console.log(data)
 
-        let notesArrJson = JSON.parse(notesArr);
-        console.log(notesArrJson);
-        console.log(typeof notesArrJson);
-
-        res.send(notesArrJson)
+        let parseNoteArr = JSON.parse(data);
+        console.log(parseNoteArr)
+        res.send(parseNoteArr);
     });
-    
+
 });
 
 
@@ -68,7 +70,6 @@ app.get('/api/notes', function (req, res) {
 // routes html  -------------------------------------------------------
 
 app.get('/notes', function (req, res) {
-    console.log(res)
     res.sendFile(path.join(__dirname, '/public/notes.html'));
 });
 
